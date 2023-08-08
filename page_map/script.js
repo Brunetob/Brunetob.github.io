@@ -210,13 +210,27 @@ document.addEventListener('DOMContentLoaded', () => {
             createObstacleMarker(userMarker.getLatLng());
         }
     };
-    function createObstacleMarker(latlng) {
+    //***********Función para guardar datos en firebase
+    async function createObstacleMarker(latlng) {
         const description = 'Nuevo obstáculo';
-        obstaclesCoordinates.push([latlng.lat, latlng.lng, description]);
-        L.marker([latlng.lat, latlng.lng], { icon: obsOneIcon }).addTo(obstaclesLayer);
-        speakMessage('Nuevo obstáculo creado en tu ubicación actual.');
-    }
 
+        // Agregar los datos del obstáculo a la base de datos
+        try {
+            await db.collection("Descripcion").add({
+                Obstaculos: description,
+                Latitud: latlng.lat,
+                Longitud: latlng.lng,
+            });
+            speakMessage('Nuevo obstáculo creado y almacenado en la base de datos.');
+        } catch (error) {
+            console.error("Error al guardar el obstáculo en la base de datos:", error);
+            speakMessage('Ha ocurrido un error al guardar el obstáculo.');
+        }
+
+        // Agregar el marcador en el mapa
+        L.marker([latlng.lat, latlng.lng], { icon: obsOneIcon }).addTo(obstaclesLayer);
+    }
+    //***********Fin función para guardar datos en firebase
     function speakMessage(message) {
         const utterance = new SpeechSynthesisUtterance(message);
         speechSynthesis.speak(utterance);
