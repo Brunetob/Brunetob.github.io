@@ -194,12 +194,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Comandos de voz
         if (result.includes('reproducir comandos') || result.includes('repetir comandos') || result.includes('volver a escuchar comandos')) {
-            const commands = "Para volver a escuchar los comandos de voz y poder navegar por la página, pruebe a decir: ir a mapa, mostrar mapa, mapa, abrir mapa, quiero ver mapa, avanzar. Para detener los audios en cualquier caso, diga: detener audios, parar, detener, quitar.";
+            const commands = "Para volver a escuchar los comandos de voz y poder navegar por la página, pruebe a decir: ir a mapa, mostrar mapa, mapa, abrir mapa, quiero ver mapa, avanzar. Para detener los audios en cualquier caso, diga: detener audios, parar, detener, quitar. Para ir al inicio o volver, diga: volver, regresar, inicio, mostrar inicio, volver al inicio, retroceder.";
             speakMessage(commands);
         } else if (result.includes('detener audios') || result.includes('parar') || result.includes('detener') || result.includes('quitar')) {
             speechSynthesis.cancel();
         } else if (result.includes('ir a mapa') || result.includes('mostrar mapa') || result.includes('mapa') || result.includes('abrir mapa') || result.includes('quiero ver mapa') || result.includes('avanzar')) {
-            map.setView([-2.9127463739190893, -78.99484858021965], 19);
+            window.location.href = 'https://brunetob.github.io/page_map/map.html';
+        } else if (result.includes('volver') || result.includes('regresar') || result.includes('inicio') || result.includes('mostrar inicio') || result.includes('volver al inicio') || result.includes('retroceder')) {
+            window.location.href = 'https://invisual-map.vercel.app/';
         }
     };
 
