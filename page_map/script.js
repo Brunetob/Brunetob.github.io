@@ -165,3 +165,60 @@ const obstaclesCoordinates = [
 obstaclesCoordinates.forEach(coord => {
     L.marker(coord, { icon: obsOneIcon }).addTo(map);
 });
+
+/*Comandos de voz */
+document.addEventListener('DOMContentLoaded', () => {
+    const toggleMicrophoneButton = document.getElementById('toggleMicrophoneButton');
+    const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition || window.mozSpeechRecognition || window.msSpeechRecognition)();
+
+    recognition.lang = 'es'; // Establece el idioma a español
+
+    let microphoneEnabled = false;
+
+    // Función para activar/desactivar el micrófono
+    toggleMicrophoneButton.addEventListener('click', () => {
+        if (microphoneEnabled) {
+            recognition.stop();
+            microphoneEnabled = false;
+            toggleMicrophoneButton.textContent = 'Activar Micrófono';
+        } else {
+            recognition.start();
+            microphoneEnabled = true;
+            toggleMicrophoneButton.textContent = 'Desactivar Micrófono';
+        }
+    });
+
+    recognition.onresult = (event) => {
+        const result = event.results[0][0].transcript.toLowerCase();
+        console.log('Comando de voz detectado:', result);
+
+        // Comandos de voz
+        if (result.includes('reproducir comandos') || result.includes('repetir comandos') || result.includes('volver a escuchar comandos')) {
+            const commands = "Para volver a escuchar los comandos de voz y poder navegar por la página, pruebe a decir: ir a mapa, mostrar mapa, mapa, abrir mapa, quiero ver mapa, avanzar. Para detener los audios en cualquier caso, diga: detener audios, parar, detener, quitar.";
+            speakMessage(commands);
+        } else if (result.includes('detener audios') || result.includes('parar') || result.includes('detener') || result.includes('quitar')) {
+            speechSynthesis.cancel();
+        } else if (result.includes('ir a mapa') || result.includes('mostrar mapa') || result.includes('mapa') || result.includes('abrir mapa') || result.includes('quiero ver mapa') || result.includes('avanzar')) {
+            map.setView([-2.9127463739190893, -78.99484858021965], 19);
+        }
+    };
+
+    function speakMessage(message) {
+        const utterance = new SpeechSynthesisUtterance(message);
+        speechSynthesis.speak(utterance);
+    }
+
+    async function checkAudioPermissions() {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            microphoneEnabled = true;
+            toggleMicrophoneButton.textContent = 'Desactivar Micrófono';
+            recognition.start();
+        } catch (error) {
+            toggleMicrophoneButton.disabled = true;
+            toggleMicrophoneButton.textContent = 'Micrófono no disponible';
+        }
+    }
+
+    checkAudioPermissions();
+});
