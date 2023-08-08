@@ -7,10 +7,13 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '© OpenStreetMap'
 }).addTo(map);
 
+// Variable para almacenar la capa de marcadores de obstáculos
+let obstaclesLayer = L.layerGroup().addTo(map);
+
 // ***Crear un marcador en las coordenadas iniciales (Sonva) y agregarlo al mapa ***
 //crear ícono del marcador
 var sonva_Pin = L.icon({
-    iconUrl: 'https://drive.google.com/uc?export=view&id=1fYDCDYPuWH9lm77oV_3D-2M3GOBXy8ot',
+    iconUrl: 'https://png.pngtree.com/png-vector/20230313/ourmid/pngtree-building-location-pointer-vector-png-image_6647661.png',
 
     iconSize:     [50, 50], // size of the icon
     iconAnchor:   [50, 46],
@@ -47,7 +50,7 @@ function updateUserLocationMarker(position) {
     } else {
         // Crea un marcador en la ubicación actual del usuario y agrégalo al mapa
         var person_pin = L.icon({
-            iconUrl: 'https://drive.google.com/uc?export=view&id=1phVSQ1ByN7tus8Mu7CNd_ogCinDgbenl',
+            iconUrl: 'https://cdn.icon-icons.com/icons2/882/PNG/512/1-18_icon-icons.com_68869.png',
         
             iconSize:     [50, 50], // size of the icon
             iconAnchor:   [30, 46],
@@ -128,7 +131,7 @@ var polygon = L.polygon([
 //******************************Marcadores de los obstáculos******************************
 //crear ícono del marcador
 var obsOneIcon = L.icon({
-    iconUrl: 'https://drive.google.com/uc?export=view&id=1LaPTa0TwcOpBzEXcbrZm617cioXSUBU8',
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/1673/1673264.png',
 
     iconSize:     [20, 30], // size of the icon
     iconAnchor:   [10, 40],
@@ -163,7 +166,8 @@ const obstaclesCoordinates = [
 
 // Agregar los marcadores de obstáculos al mapa
 obstaclesCoordinates.forEach(coord => {
-    L.marker(coord, { icon: obsOneIcon }).addTo(map);
+    //L.marker(coord, { icon: obsOneIcon }).addTo(map);
+    L.marker(coord, { icon: obsOneIcon }).addTo(obstaclesLayer);
 });
 
 /*Comandos de voz */
@@ -209,7 +213,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function createObstacleMarker(latlng) {
         const description = 'Nuevo obstáculo';
         obstaclesCoordinates.push([latlng.lat, latlng.lng, description]);
-        L.marker([latlng.lat, latlng.lng], { icon: obsOneIcon }).addTo(map);
+        L.marker([latlng.lat, latlng.lng], { icon: obsOneIcon }).addTo(obstaclesLayer);
         speakMessage('Nuevo obstáculo creado en tu ubicación actual.');
     }
 
