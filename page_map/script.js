@@ -202,8 +202,16 @@ document.addEventListener('DOMContentLoaded', () => {
             window.location.href = 'https://brunetob.github.io/page_map/map.html';
         } else if (result.includes('volver') || result.includes('regresar') || result.includes('inicio') || result.includes('mostrar inicio') || result.includes('volver al inicio') || result.includes('retroceder')) {
             window.location.href = 'https://invisual-map.vercel.app';
+        } else if (result.includes('crear obstáculo')) {
+            createObstacleMarker(userMarker.getLatLng());
         }
     };
+    function createObstacleMarker(latlng) {
+        const description = 'Nuevo obstáculo';
+        obstaclesCoordinates.push([latlng.lat, latlng.lng, description]);
+        L.marker([latlng.lat, latlng.lng], { icon: obsOneIcon }).addTo(map);
+        speakMessage('Nuevo obstáculo creado en tu ubicación actual.');
+    }
 
     function speakMessage(message) {
         const utterance = new SpeechSynthesisUtterance(message);
