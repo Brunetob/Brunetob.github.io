@@ -201,7 +201,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } else if (result.includes('ir a mapa') || result.includes('mostrar mapa') || result.includes('mapa') || result.includes('abrir mapa') || result.includes('quiero ver mapa') || result.includes('avanzar')) {
             window.location.href = 'https://brunetob.github.io/page_map/map.html';
         } else if (result.includes('volver') || result.includes('regresar') || result.includes('inicio') || result.includes('mostrar inicio') || result.includes('volver al inicio') || result.includes('retroceder')) {
-            window.location.href = 'https://invisual-map.vercel.app/';
+            window.location.href = 'https://invisual-map.vercel.app';
         }
     };
 
