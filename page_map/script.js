@@ -221,7 +221,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 Latitud: latlng.lat,
                 Longitud: latlng.lng,
             });
-            speakMessage('Nuevo obstáculo creado y almacenado en la base de datos.');
+            speakMessage('Nuevo obstáculo creado para ser detectado.');
         } catch (error) {
             console.error("Error al guardar el obstáculo en la base de datos:", error);
             speakMessage('Ha ocurrido un error al guardar el obstáculo.');

@@ -170,6 +170,35 @@ obstaclesCoordinates.forEach(coord => {
     L.marker(coord, { icon: obsOneIcon }).addTo(obstaclesLayer);
 });
 
+// Función para eliminar el obstáculo más cercano
+function deleteNearestObstacle(userLatLng) {
+    let nearestObstacleIndex = -1;
+    let nearestDistance = Infinity;
+
+    // Encontrar el obstáculo más cercano
+    obstaclesCoordinates.forEach((coord, index) => {
+        const distance = getDistance(userLatLng.lat, userLatLng.lng, coord[0], coord[1]);
+        if (distance <= 2 && distance < nearestDistance) {
+            nearestObstacleIndex = index;
+            nearestDistance = distance;
+        }
+    });
+
+    // Si se encontró un obstáculo cercano, eliminarlo
+    if (nearestObstacleIndex !== -1) {
+        const description = obstaclesCoordinates[nearestObstacleIndex][2];
+        obstaclesCoordinates.splice(nearestObstacleIndex, 1);
+        obstaclesLayer.clearLayers(); // Limpiar capa de obstáculos en el mapa
+        obstaclesCoordinates.forEach(coord => {
+            L.marker(coord, { icon: obsOneIcon }).addTo(obstaclesLayer);
+        });
+        speakMessage(`Obstáculo "${description}" eliminado.`);
+    } else {
+        speakMessage('No se encontró un obstáculo cercano para eliminar.');
+    }
+}
+/** */
+
 /*Comandos de voz */
 document.addEventListener('DOMContentLoaded', () => {
     const toggleMicrophoneButton = document.getElementById('toggleMicrophoneButton');
@@ -208,6 +237,9 @@ document.addEventListener('DOMContentLoaded', () => {
             window.location.href = 'https://invisual-map.vercel.app';
         } else if (result.includes('crear obstáculo')) {
             createObstacleMarker(userMarker.getLatLng());
+        }else if (result.includes('eliminar obstáculo') || result.includes('quitar obstáculo')) {
+            // ***Llamada a la función para eliminar el obstáculo más cercano***
+            deleteNearestObstacle(userMarker.getLatLng());
         }
     };
     //***********Función para guardar datos en firebase
